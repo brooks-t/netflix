@@ -1,0 +1,39 @@
+.row {
+    /* color: white; */
+    margin-left: 20px;
+}
+
+.row__posters {
+    display: flex;
+    overflow-y: hidden;
+    overflow-x: scroll;
+    padding: 20px;
+}
+
+.row__posters::-webkit-scrollbar {
+    /* This is for the scrollbar to be hidden*/
+    display: none;
+}
+
+.row__poster {
+    object-fit: contain;
+    /* This is for the image to fit in the div and also keep the aspect ratio*/
+    width: 100%;
+    max-height: 100px;
+    transition: transform 450ms;
+    /* This is for any animation to take some time*/
+    margin-right: 10px;
+}
+
+.row__poster:hover {
+    transform: scale(1.08);
+    /* This is for the image to scale up when hovered*/
+}
+
+.row__posterLarge {
+    max-height: 250px;
+}
+
+.row__posterLarge:hover {
+    transform: scale(1.09);
+}
