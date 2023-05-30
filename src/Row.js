@@ -3,11 +3,13 @@ import axios from "./axios";
 // axios is the 'instance' we created in axios.js. since you exported it as a default, you can name it whatever you want when you import it. but if you didn't export it as a default, you would have to import it like this: import { instance } from './axios';
 import "./Row.css";
 import YouTube from "react-youtube";
+import movieTrailer from "movie-trailer";
 
 const base_url = "https://image.tmdb.org/t/p/original/";
 
 function Row({ title, fetchURL, isLargeRow }) {
 	const [movies, setMovies] = useState([]);
+	const [trailerUrl, setTrailerUrl] = useState("");
 
 	// A snippet of code which runs based on a specific condition/variable
 	useEffect(() => {
@@ -29,7 +31,20 @@ function Row({ title, fetchURL, isLargeRow }) {
 		},
 	};
 
-	const handleClick = (movie) => {};
+	// this function is for the youtube video player. he explains it in the video at 2:45:00. the movieTrailer stuff is from the movie-trailer package and he discusses this around 2:53 in the video.
+	const handleClick = (movie) => {
+		if (trailerUrl) {
+			setTrailerUrl("");
+		} else {
+			movieTrailer(movie?.name || "")
+				.then((url) => {
+					// https://www.youtube.com/watch?v=XtMThy8QKqU
+					const urlParams = new URLSearchParams(new URL(url).search);
+					setTrailerUrl(urlParams.get("v"));
+				})
+				.catch((error) => console.log(error));
+		}
+	};
 
 	return (
 		<div className="row">
@@ -52,7 +67,7 @@ function Row({ title, fetchURL, isLargeRow }) {
 					// needed base_url because the poster_path is only the end of the url. it's not the full url.
 				))}
 			</div>
-			{/* <YouTube videoId={trailerUrl} opts={opts} /> */}
+			{trailerUrl && <YouTube videoId={trailerUrl} opts={opts} />}
 			{/*this is the youtube video player. it's from the react-youtube package.*/}
 		</div>
 	);
